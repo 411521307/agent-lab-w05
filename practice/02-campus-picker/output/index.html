@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7fb">
+<title>Campus break activity picker</title>
+<style>
+:root{color-scheme:light;--ink:#17233b;--muted:#53627a;--line:#c8d2e2;--accent:#1d4ed8;--surface:#fff;--wash:#eff4fb}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#f5f7fb,#e7effa);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}.shell{width:min(100% - 32px,760px);margin:24px auto 48px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}.eyebrow{margin:0;color:var(--accent);font-size:.82rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{margin:.2rem 0 0;font-size:clamp(1.75rem,6vw,2.5rem);line-height:1.18}.language{flex:none;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}.notice{margin:18px 0;padding:12px 14px;border-left:4px solid var(--accent);border-radius:8px;background:#e8effd;color:#233c68;font-size:.94rem}.card{padding:clamp(18px,5vw,28px);border:1px solid var(--line);border-radius:20px;background:var(--surface);box-shadow:0 14px 40px #25385812}.filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}label{display:grid;gap:6px;font-weight:750}select{width:100%;min-height:48px;padding:9px 34px 9px 11px;border:1px solid #9eacc1;border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:1rem}button:focus-visible,select:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.primary,.secondary{min-height:48px;padding:10px 17px;border:0;border-radius:11px;font:inherit;font-weight:800;cursor:pointer}.primary{background:var(--accent);color:#fff}.secondary{border:1px solid var(--line);background:#fff;color:var(--ink)}.result{min-height:140px;margin-top:20px;padding:18px;border:1px dashed #aab8cd;border-radius:14px;background:var(--wash)}.result h2{margin:0 0 8px;font-size:1.3rem}.result p{margin:5px 0;color:#34445e}.result .empty{margin:12px 0;font-weight:750}.history{margin-top:22px}.history-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.history h2{margin:0;font-size:1.2rem}.history ol{margin:12px 0 0;padding-left:24px}.history li{padding:6px 0;color:#34445e}.foot{margin:18px 4px;color:var(--muted);font-size:.86rem}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="top"><div><p class="eyebrow" id="eyebrow">A small pause, picked for you</p><h1 id="title">What can I do between classes?</h1></div><button class="language" id="language" type="button" aria-label="Switch to 繁體中文">繁體中文</button></header>
+  <p class="notice" id="notice">Fictional teaching activities; not an official university announcement.</p>
+  <section class="card" aria-label="Activity picker">
+    <div class="filters">
+      <label><span id="location-label">Location</span><select id="location"><option value="all">All locations</option><option value="indoor">Indoor</option><option value="outdoor">Outdoor</option></select></label>
+      <label><span id="time-label">Available time</span><select id="time"><option value="15">15 minutes</option><option value="30" selected>30 minutes</option><option value="60">60 minutes</option></select></label>
+      <label><span id="energy-label">Energy</span><select id="energy"><option value="all">All energy levels</option><option value="low">Low</option><option value="medium">Medium</option></select></label>
+    </div>
+    <div class="actions"><button class="primary" id="pick" type="button">Pick an activity</button><button class="secondary" id="reset" type="button">Reset filters</button></div>
+    <div class="result" id="result" aria-live="polite"><p class="empty" id="placeholder">Choose your filters, then pick an activity.</p></div>
+    <section class="history"><div class="history-head"><h2 id="history-title">Recent picks</h2><button class="secondary" id="clear" type="button">Clear history</button></div><ol id="history-list"><li id="history-empty">No picks yet.</li></ol></section>
+  </section>
+  <p class="foot" id="footer">Your history stays in this page session and keeps the five latest successful picks.</p>
+</main>
+<script>
+'use strict';
+const activities=[
+ {id:'A01',name_zh:'整理書包',name_en:'Organize your bag',location_type:'indoor',minutes:10,energy:'low'},
+ {id:'A02',name_zh:'畫一張小卡',name_en:'Draw a small card',location_type:'indoor',minutes:15,energy:'low'},
+ {id:'A03',name_zh:'寫三句讀書筆記',name_en:'Write three study notes',location_type:'indoor',minutes:10,energy:'low'},
+ {id:'A04',name_zh:'安靜讀兩頁書',name_en:'Read two pages quietly',location_type:'indoor',minutes:15,energy:'low'},
+ {id:'A05',name_zh:'排好明日待辦',name_en:'Plan tomorrow’s tasks',location_type:'indoor',minutes:20,energy:'low'},
+ {id:'A06',name_zh:'整理本機練習檔',name_en:'Organize practice files',location_type:'indoor',minutes:30,energy:'medium'},
+ {id:'A07',name_zh:'在合適位置慢走',name_en:'Take a gentle walk in a suitable area',location_type:'outdoor',minutes:15,energy:'low'},
+ {id:'A08',name_zh:'觀察天空並畫草圖',name_en:'Observe the sky and sketch',location_type:'outdoor',minutes:20,energy:'low'},
+ {id:'A09',name_zh:'在合適位置快走',name_en:'Take a brisk walk in a suitable area',location_type:'outdoor',minutes:30,energy:'medium'},
+ {id:'A10',name_zh:'規劃小組練習',name_en:'Plan a group exercise',location_type:'indoor',minutes:45,energy:'medium'},
+ {id:'A11',name_zh:'記錄自然色彩',name_en:'Record colors in nature',location_type:'outdoor',minutes:45,energy:'low'},
+ {id:'A12',name_zh:'構思下一次社團活動',name_en:'Brainstorm a future club activity',location_type:'indoor',minutes:60,energy:'medium'}
+];
+const words={en:{lang:'en',button:'繁體中文',aria:'Switch to 繁體中文',eyebrow:'A small pause, picked for you',title:'What can I do between classes?',notice:'Fictional teaching activities; not an official university announcement.',location:'Location',allLocations:'All locations',indoor:'Indoor',outdoor:'Outdoor',time:'Available time',minutes:n=>`${n} minutes`,energy:'Energy',allEnergy:'All energy levels',low:'Low',medium:'Medium',pick:'Pick an activity',reset:'Reset filters',placeholder:'Choose your filters, then pick an activity.',history:'Recent picks',clear:'Clear history',empty:'No picks yet.',footer:'Your history stays in this page session and keeps the five latest successful picks.',noMatch:'No matching activities.',locationValue:{indoor:'Indoor',outdoor:'Outdoor'},energyValue:{low:'Low',medium:'Medium'}},zh:{lang:'zh-Hant',button:'English',aria:'Switch to English',eyebrow:'為課間挑一個小休息',title:'下課空檔可以做什麼？',notice:'虛構教學活動；非校方正式公告。',location:'地點',allLocations:'不限地點',indoor:'室內',outdoor:'室外',time:'可用時間',minutes:n=>`${n} 分鐘`,energy:'活動強度',allEnergy:'不限強度',low:'低',medium:'中',pick:'幫我選一個',reset:'重設篩選',placeholder:'選好條件，再抽一項活動。',history:'最近抽選',clear:'清除紀錄',empty:'尚無抽選紀錄。',footer:'紀錄只保留在本頁工作階段，顯示最近五筆成功結果。',noMatch:'沒有符合條件的活動。',locationValue:{indoor:'室內',outdoor:'室外'},energyValue:{low:'低',medium:'中'}}};
+const $=id=>document.getElementById(id);let lang='en';let history=[];let lastPick=null;
+function translate(){const w=words[lang];document.documentElement.lang=w.lang;document.title=lang==='en'?'Campus break activity picker':'課間活動小幫手';$('language').textContent=w.button;$('language').setAttribute('aria-label',w.aria);$('eyebrow').textContent=w.eyebrow;$('title').textContent=w.title;$('notice').textContent=w.notice;$('location-label').textContent=w.location;$('time-label').textContent=w.time;$('energy-label').textContent=w.energy;$('location').options[0].text=w.allLocations;$('location').options[1].text=w.indoor;$('location').options[2].text=w.outdoor;for(const o of $('time').options)o.text=w.minutes(Number(o.value));$('energy').options[0].text=w.allEnergy;$('energy').options[1].text=w.low;$('energy').options[2].text=w.medium;$('pick').textContent=w.pick;$('reset').textContent=w.reset;$('history-title').textContent=w.history;$('clear').textContent=w.clear;$('footer').textContent=w.footer;if(lastPick)showPick(lastPick);else $('result').innerHTML=`<p class="empty" id="placeholder">${w.placeholder}</p>`;renderHistory()}
+function showPick(a){const w=words[lang];$('result').innerHTML=`<h2>${escapeText(a.id)} · ${escapeText(lang==='en'?a.name_en:a.name_zh)}</h2><p>${w.minutes(a.minutes)} · ${w.locationValue[a.location_type]} · ${w.energyValue[a.energy]}</p>`}
+function escapeText(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function renderHistory(){const w=words[lang];$('history-list').replaceChildren();if(!history.length){const li=document.createElement('li');li.textContent=w.empty;$('history-list').append(li);return}for(const a of history){const li=document.createElement('li');li.textContent=`${a.id} · ${lang==='en'?a.name_en:a.name_zh} · ${w.minutes(a.minutes)}`;$('history-list').append(li)}}
+$('pick').addEventListener('click',()=>{const loc=$('location').value,limit=Number($('time').value),energy=$('energy').value;const matches=activities.filter(a=>(loc==='all'||a.location_type===loc)&&a.minutes<=limit&&(energy==='all'||a.energy===energy));if(!matches.length){lastPick=null;$('result').innerHTML=`<p class="empty" role="status">${words[lang].noMatch}</p>`;return}lastPick=matches[Math.floor(Math.random()*matches.length)];history=[lastPick,...history].slice(0,5);showPick(lastPick);renderHistory()});
+$('reset').addEventListener('click',()=>{$('location').value='all';$('time').value='30';$('energy').value='all';lastPick=null;$('result').innerHTML=`<p class="empty">${words[lang].placeholder}</p>`});
+$('clear').addEventListener('click',()=>{history=[];renderHistory()});$('language').addEventListener('click',()=>{lang=lang==='en'?'zh':'en';translate()});translate();
+</script>
+</body>
+</html>
+
