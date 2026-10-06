@@ -1,0 +1,62 @@
+[
+  {
+    "source": "input/announcement.txt",
+    "destination": "announcements/announcement.txt",
+    "reason": "Announcement or related communication text"
+  },
+  {
+    "source": "input/announcement_copy.txt",
+    "destination": "announcements/announcement_copy.txt",
+    "reason": "Announcement or related communication text"
+  },
+  {
+    "source": "input/poster_text.txt",
+    "destination": "announcements/poster_text.txt",
+    "reason": "Announcement or related communication text"
+  },
+  {
+    "source": "input/meeting_notes.txt",
+    "destination": "planning/meeting_notes.txt",
+    "reason": "Planning notes, contingency, or proposal"
+  },
+  {
+    "source": "input/next_steps.txt",
+    "destination": "planning/next_steps.txt",
+    "reason": "Planning notes, contingency, or proposal"
+  },
+  {
+    "source": "input/rain_plan.txt",
+    "destination": "planning/rain_plan.txt",
+    "reason": "Planning notes, contingency, or proposal"
+  },
+  {
+    "source": "input/proposal_final.txt",
+    "destination": "planning/proposal_final.txt",
+    "reason": "Planning notes, contingency, or proposal"
+  },
+  {
+    "source": "input/proposal_final2.txt",
+    "destination": "planning/proposal_final2.txt",
+    "reason": "Planning notes, contingency, or proposal"
+  },
+  {
+    "source": "input/budget_draft.txt",
+    "destination": "budget/budget_draft.txt",
+    "reason": "Budget planning"
+  },
+  {
+    "source": "input/feedback_questions.txt",
+    "destination": "feedback/feedback_questions.txt",
+    "reason": "Feedback questions"
+  },
+  {
+    "source": "input/equipment_list.txt",
+    "destination": "equipment/equipment_list.txt",
+    "reason": "Equipment inventory"
+  },
+  {
+    "source": "input/equipment_backup.txt",
+    "destination": "equipment/equipment_backup.txt",
+    "reason": "Equipment inventory"
+  }
+]
